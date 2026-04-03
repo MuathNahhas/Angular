@@ -31,7 +31,7 @@ export class UsersRepository {
     return await this.repo.findOneBy({ id: userId });
   }
 
-   findOneByUserName(userName: string) {
+  findOneByUserName(userName: string) {
     return this.repo.findOneBy({ username: userName });
   }
 }

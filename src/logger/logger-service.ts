@@ -16,18 +16,18 @@ export class LogService implements LoggerService {
           }),
         ),
       }),
-      loki: new LokiTransport({
-        host: process.env.DEV_GR_HOST,
-        basicAuth: process.env.DEV_GR_API_KEY,
-        labels: {
-          app: 'qashio-api',
-          server: 'nest_server',
-        },
-        json: true,
-        format: format.json(),
-        replaceTimestamp: true,
-        onConnectionError: (err) => console.error('Loki Error:', err),
-      }),
+      // loki: new LokiTransport({
+      //   host: process.env.DEV_GR_HOST,
+      //   basicAuth: process.env.DEV_GR_API_KEY,
+      //   labels: {
+      //     app: 'qashio-api',
+      //     server: 'nest_server',
+      //   },
+      //   json: true,
+      //   format: format.json(),
+      //   replaceTimestamp: true,
+      //   onConnectionError: (err) => console.error('Loki Error:', err),
+      // }),
     };
     this.logger = createLogger({
       format: format.combine(
@@ -35,8 +35,8 @@ export class LogService implements LoggerService {
         format.errors({ stack: true }),
         format.json(),
       ),
-      transports: [transportOptions.console, transportOptions.loki],
-      exceptionHandlers: [transportOptions.console, transportOptions.loki],
+      transports: [transportOptions.console],
+      exceptionHandlers: [transportOptions.console],
       exitOnError: false,
     });
   }

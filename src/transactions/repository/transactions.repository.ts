@@ -16,7 +16,7 @@ export class TransactionsRepository {
   private readonly tableName = 'transactions';
   constructor(
     private readonly dbService: DatabaseService,
-    private readonly redisService: RedisService,
+    //private readonly redisService: RedisService,
     protected readonly logger: LogService,
   ) {}
 
@@ -42,17 +42,17 @@ export class TransactionsRepository {
   }
 
   async findOne(transactionId: string) {
-    const cacheKey = `transaction:${transactionId}`;
+    //const cacheKey = `transaction:${transactionId}`;
 
-    const cached = await this.redisService.getCache(cacheKey);
-    if (cached) return cached;
-    const result = await this.repo.findOneBy({ id: transactionId });
-    if (!result) {
-      throw new NotFoundException(
-        `Transaction with ID ${transactionId} not found`,
-      );
-    }
-    await this.redisService.setCache(cacheKey, result, CACHE_TTL.LONG);
+    // const cached = await this.redisService.getCache(cacheKey);
+    // if (cached) return cached;
+     const result = await this.repo.findOneBy({ id: transactionId });
+    // if (!result) {
+    //   throw new NotFoundException(
+    //     `Transaction with ID ${transactionId} not found`,
+    //   );
+    // }
+    //await this.redisService.setCache(cacheKey, result, CACHE_TTL.LONG);
     return result;
   }
   private applyTransactionFilters(query: any, filters: any) {
@@ -159,8 +159,8 @@ export class TransactionsRepository {
     }
     const updatedTransaction = await this.repo.save(transaction);
     this.logger.log(`Transaction ${id} updated in database`);
-    const cacheKey = `transaction:${id}`;
-    await this.redisService.removeCache(cacheKey);
+   // const cacheKey = `transaction:${id}`;
+   // await this.redisService.removeCache(cacheKey);
     return this.findOne(updatedTransaction.id);
   }
   async remove(id: string) {
@@ -170,7 +170,7 @@ export class TransactionsRepository {
       throw new NotFoundException(`Transaction with ID ${id} not found`);
     }
     const removedTransaction = await this.repo.softRemove(transaction);
-    await this.redisService.removeCache(cacheKey);
+    //await this.redisService.removeCache(cacheKey);
     return removedTransaction;
   }
 }

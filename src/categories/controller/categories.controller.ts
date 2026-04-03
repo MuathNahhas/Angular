@@ -9,7 +9,6 @@ import {
 import { CategoriesService } from '../service/categories.service';
 import { CreateCategoryDto } from '../dto/create-category.dto';
 
-
 @Controller('categories')
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
